@@ -12,6 +12,7 @@ export default function Header() {
       }}
     >
       <div
+        className="header-inner"
         style={{
           maxWidth: 1120,
           margin: "0 auto",
@@ -36,7 +37,7 @@ export default function Header() {
         </Link>
 
         {/* Nav */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 24, flex: 1 }}>
+        <nav className="header-nav" style={{ display: "flex", alignItems: "center", gap: 24, flex: 1 }}>
           <Link href="/" style={{ fontSize: 14, color: "var(--fg-muted)" }} className="nav-link">
             ホーム
           </Link>

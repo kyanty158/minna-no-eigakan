@@ -60,3 +60,95 @@ a {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ── レスポンシブ ── */
+@media (max-width: 768px) {
+  /* ヘッダーナビを非表示 */
+  .header-nav { display: none !important; }
+  .header-inner { gap: 12px !important; }
+
+  /* Hero: 1カラム */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-right { display: none !important; }
+
+  /* シーンカード: 2カラム */
+  .scene-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 特集カード: 1カラム */
+  .article-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* VODサービス: 2カラム */
+  .vod-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Today's Pick: 1カラム */
+  .featured-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .featured-poster { display: none !important; }
+  .featured-info { padding: 20px !important; }
+
+  /* 映画詳細ヒーロー: 1カラム */
+  .detail-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .detail-poster {
+    max-width: 180px !important;
+    margin: 0 auto !important;
+  }
+
+  /* 映画詳細ボディ: 1カラム（サイドバー下へ） */
+  .detail-body-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .detail-sidebar {
+    position: static !important;
+  }
+
+  /* 関連映画: 3カラム */
+  .related-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* 記事詳細: 1カラム（ToC非表示） */
+  .article-body-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .article-toc { display: none !important; }
+
+  /* ランキング: 縦積み */
+  .ranking-item {
+    grid-template-columns: 36px 100px 1fr !important;
+  }
+  .ranking-meta { display: none !important; }
+
+  /* Email CTA */
+  .email-cta {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+  .email-cta-form {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .email-cta-form input {
+    width: 100% !important;
+  }
+
+  /* AdBanner: leaderboard を rectangle に縮小 */
+  .ad-leaderboard {
+    max-width: 300px !important;
+    height: 250px !important;
+  }
+
+  /* 汎用パディング調整 */
+  .section-pad { padding: 32px 16px !important; }
+  .hero-pad { padding: 36px 16px !important; }
+}

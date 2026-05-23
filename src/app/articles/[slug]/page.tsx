@@ -165,6 +165,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       {/* ── Body ── */}
       <div
+        className="article-body-grid"
         style={{
           maxWidth: 1120,
           margin: "0 auto",
@@ -176,7 +177,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         }}
       >
         {/* Sidebar ToC */}
-        <div style={{ position: "sticky", top: 80 }}>
+        <div className="article-toc" style={{ position: "sticky", top: 80 }}>
           <div
             style={{
               border: "1px solid var(--border)",
@@ -290,6 +291,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   return (
                     <div
                       key={movie.id}
+                      className="ranking-item"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "44px 140px 1fr auto",
