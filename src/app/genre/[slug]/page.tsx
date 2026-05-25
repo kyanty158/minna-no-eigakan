@@ -37,9 +37,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const genre = await getGenre(slug);
   if (!genre) return {};
+  const canonical = `https://minna-no-eigakan.vercel.app/genre/${slug}`;
+  const title = `${genre.name}映画・ドラマおすすめ一覧｜VOD配信情報つき`;
+  const description = `${genre.name}ジャンルの映画・ドラマを一覧で紹介。${INTRO[slug] ?? ""}各作品がどのVODで見れるかもチェックできます。`;
   return {
-    title: `${genre.name}映画・ドラマおすすめ一覧`,
-    description: `${genre.name}ジャンルの映画・ドラマを一覧で紹介。${INTRO[slug] ?? ""}各作品がどのVODで見れるかもチェックできます。`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

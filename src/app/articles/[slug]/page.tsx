@@ -47,9 +47,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
   if (!article) return {};
+  const canonical = `https://minna-no-eigakan.vercel.app/articles/${slug}`;
+  const description = article.excerpt ?? `${article.title}。映画・ドラマのおすすめまとめ記事です。`;
   return {
     title: article.title,
-    description: article.excerpt ?? undefined,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: article.title,
+      description,
+      url: canonical,
+      type: "article",
+      ...(article.published_at ? { publishedTime: article.published_at } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description,
+    },
   };
 }
 
@@ -71,13 +86,40 @@ export default async function ArticleDetailPage({ params }: Props) {
   const movieIds = articleMovies.map((am) => am.movie.id);
   const bestFlatMap = await getBestFlatAvailability(movieIds);
 
-  const pageUrl = `https://minna-no-eigakan.vercel.app/articles/${slug}`;
+  const BASE_URL = "https://minna-no-eigakan.vercel.app";
+  const pageUrl = `${BASE_URL}/articles/${slug}`;
   const shareText = `${article.title} | みんなの映画館`;
-
   const flatCount = movieIds.filter((id) => bestFlatMap[id]).length;
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: article.title,
+        description: article.excerpt ?? undefined,
+        url: pageUrl,
+        ...(article.published_at ? { datePublished: article.published_at } : {}),
+        dateModified: article.updated_at,
+        author: { "@type": "Organization", name: "みんなの映画館編集部" },
+        publisher: { "@type": "Organization", name: "みんなの映画館", url: BASE_URL },
+        inLanguage: "ja-JP",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "ホーム", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "特集・まとめ", item: `${BASE_URL}/articles` },
+          { "@type": "ListItem", position: 3, name: article.title, item: pageUrl },
+        ],
+      },
+    ],
+  };
+
   return (
-    <div style={{ backgroundColor: "var(--bg)" }}>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <div style={{ backgroundColor: "var(--bg)" }}>
       {/* ── Hero ── */}
       <div style={{ borderBottom: "1px solid var(--border)", backgroundColor: "var(--bg-card)" }}>
         <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 20px" }}>
@@ -334,5 +376,6 @@ export default async function ArticleDetailPage({ params }: Props) {
         </Link>
       </div>
     </div>
+    </>
   );
 }

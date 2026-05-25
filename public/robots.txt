@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /go/
+
+Sitemap: https://minna-no-eigakan.vercel.app/sitemap.xml

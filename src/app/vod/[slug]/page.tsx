@@ -37,9 +37,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = await getService(slug);
   if (!service) return {};
+  const canonical = `https://minna-no-eigakan.vercel.app/vod/${slug}`;
+  const title = `${service.name}の評判・料金・おすすめ作品まとめ【2026年最新】`;
+  const description = `${service.name}の月額料金・無料トライアル・配信作品を徹底解説。${service.free_trial_text ? `${service.free_trial_text}の無料お試しあり。` : ""}${service.description ?? ""}`;
   return {
-    title: `${service.name}の評判・料金・おすすめ作品まとめ`,
-    description: `${service.name}の月額料金・無料トライアル・配信作品を紹介。${service.free_trial_text ? `${service.free_trial_text}の無料お試しあり。` : ""}${service.description ?? ""}`,
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

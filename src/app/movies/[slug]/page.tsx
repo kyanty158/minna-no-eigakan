@@ -127,13 +127,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const movie = await getMovie(slug);
   if (!movie) return {};
+  const canonical = `https://minna-no-eigakan.vercel.app/movies/${slug}`;
+  const title = `『${movie.title}』はどこで見れる？配信中のVODを紹介`;
+  const description = `『${movie.title}』(${movie.release_year ?? ""}) が視聴できるVODサービスを紹介。無料トライアルで実質0円で観る方法も解説。${movie.summary ?? ""}`;
   return {
-    title: `『${movie.title}』はどこで見れる？配信中のVODを紹介`,
-    description: `『${movie.title}』(${movie.release_year ?? ""}) が視聴できるVODサービスを紹介します。${movie.summary ?? ""}`,
+    title,
+    description,
+    alternates: { canonical },
     openGraph: {
-      title: `『${movie.title}』はどこで見れる？`,
-      description: movie.summary ?? undefined,
-      images: movie.poster_url ? [{ url: movie.poster_url }] : undefined,
+      title,
+      description,
+      url: canonical,
+      type: "article",
+      images: movie.poster_url ? [{ url: movie.poster_url, width: 500, height: 750, alt: movie.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: movie.poster_url ? [movie.poster_url] : undefined,
     },
   };
 }
@@ -184,6 +196,7 @@ export default async function MovieDetailPage({ params }: Props) {
     },
   ];
 
+  const BASE_URL = "https://minna-no-eigakan.vercel.app";
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -196,6 +209,14 @@ export default async function MovieDetailPage({ params }: Props) {
         ...(movie.poster_url ? { image: movie.poster_url } : {}),
         ...(movie.runtime_minutes ? { duration: `PT${movie.runtime_minutes}M` } : {}),
         ...(movie.country ? { countryOfOrigin: { "@type": "Country", name: movie.country } } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "ホーム", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "作品を探す", item: `${BASE_URL}/movies` },
+          { "@type": "ListItem", position: 3, name: movie.title, item: pageUrl },
+        ],
       },
       {
         "@type": "FAQPage",
