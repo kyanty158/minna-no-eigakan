@@ -58,16 +58,6 @@ async function getMovieCount(): Promise<number> {
   return count ?? 0;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  const half = rating - full >= 0.3;
-  return (
-    <span style={{ color: "var(--star)", letterSpacing: 1, fontSize: 14 }}>
-      {"★".repeat(full)}{half ? "½" : ""}{"☆".repeat(5 - full - (half ? 1 : 0))}
-    </span>
-  );
-}
-
 const articleFallbackBgs = [
   "linear-gradient(135deg, #1e3f5c 0%, #0f2237 100%)",
   "linear-gradient(135deg, #6b2d4a 0%, #3d1a2e 100%)",
@@ -190,9 +180,8 @@ export default async function HomePage() {
                   {featuredMovie.title}
                 </h2>
                 <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 10 }}>
-                  <StarRating rating={4.2} />
                   <span style={{ fontSize: 13, color: "var(--fg-muted)" }}>
-                    {[featuredMovie.release_year, featuredMovie.runtime_minutes ? `${featuredMovie.runtime_minutes}分` : null, featuredMovie.country].filter(Boolean).join(" · ")}
+                    {[featuredMovie.release_year ? `${featuredMovie.release_year}年` : null, featuredMovie.runtime_minutes ? `${featuredMovie.runtime_minutes}分` : null, featuredMovie.country].filter(Boolean).join(" · ")}
                   </span>
                 </div>
                 {featuredMovie.summary && (

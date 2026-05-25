@@ -13,6 +13,12 @@
   --star: #e8a020;
   --btn-dark: #1c1a18;
   --btn-dark-hover: #2e2b28;
+
+  /* 一覧系ページ（Tailwind arbitrary値）で参照しているエイリアス */
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--bg-card);
+  --muted: var(--fg-muted);
 }
 
 @theme inline {
@@ -148,7 +154,33 @@ a {
     height: 250px !important;
   }
 
+  /* VODランキングカード: 縦積み */
+  .vod-rank-card {
+    grid-template-columns: 48px 1fr !important;
+  }
+  .vod-rank-card > div:last-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* 作品グリッド: 3カラム */
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* フッター: 2カラム */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px !important;
+  }
+
   /* 汎用パディング調整 */
   .section-pad { padding: 32px 16px !important; }
   .hero-pad { padding: 36px 16px !important; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
 }

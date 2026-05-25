@@ -2,39 +2,30 @@ import Link from "next/link";
 
 const cols = [
   {
-    title: "サービス",
+    title: "コンテンツ",
     links: [
-      { label: "みんなの映画館とは", href: "/" },
       { label: "作品を探す", href: "/movies" },
-      { label: "ジャンル一覧", href: "/genre/romance" },
+      { label: "シーンから探す", href: "/scene/couple" },
+      { label: "ジャンルから探す", href: "/genre/romance" },
       { label: "特集・まとめ", href: "/articles" },
-      { label: "配信サービス", href: "/vod" },
-      { label: "記事一覧", href: "/articles" },
+      { label: "VOD比較", href: "/vod" },
     ],
   },
   {
-    title: "ヘルプ",
+    title: "人気のVOD",
     links: [
-      { label: "よくある質問", href: "/" },
-      { label: "お問い合わせ", href: "/" },
-      { label: "ご利用ガイド", href: "/" },
-      { label: "プライバシーポリシー", href: "/" },
+      { label: "U-NEXT", href: "/vod/unext" },
+      { label: "DMM TV", href: "/vod/dmm-tv" },
+      { label: "Hulu", href: "/vod/hulu" },
+      { label: "ABEMAプレミアム", href: "/vod/abema" },
     ],
   },
   {
-    title: "運営会社",
+    title: "サイト情報",
     links: [
-      { label: "会社概要", href: "/" },
-      { label: "採用情報", href: "/" },
-      { label: "ニュース", href: "/" },
-    ],
-  },
-  {
-    title: "公式SNS",
-    links: [
-      { label: "X (旧Twitter)", href: "/" },
-      { label: "Instagram", href: "/" },
-      { label: "YouTube", href: "/" },
+      { label: "みんなの映画館とは", href: "/about" },
+      { label: "お問い合わせ", href: "/contact" },
+      { label: "プライバシーポリシー", href: "/privacy" },
     ],
   },
 ];
@@ -69,9 +60,10 @@ export default function Footer() {
 
         {/* Links grid */}
         <div
+          className="footer-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateColumns: "repeat(3, 1fr)",
             gap: 32,
             marginBottom: 40,
           }}
@@ -127,7 +119,7 @@ export default function Footer() {
             </p>
           </div>
           <p style={{ fontSize: 12, color: "var(--fg-muted)" }}>
-            © 2025 みんなの映画館. All Rights Reserved.
+            © 2026 みんなの映画館. All Rights Reserved.
           </p>
         </div>
       </div>
