@@ -69,8 +69,9 @@ a {
 
 /* ── レスポンシブ ── */
 @media (max-width: 768px) {
-  /* ヘッダーナビを非表示 */
+  /* ヘッダーナビ・検索を非表示 */
   .header-nav { display: none !important; }
+  .header-search { display: none !important; }
   .header-inner { gap: 12px !important; }
 
   /* Hero: 1カラム */

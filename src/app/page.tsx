@@ -3,6 +3,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import type { Movie, Article } from "@/types";
 import AdBanner from "@/components/ui/AdBanner";
+import SearchBox from "@/components/ui/SearchBox";
 
 const scenes = [
   { name: "カップル", slug: "couple", icon: "♡", bg: "linear-gradient(135deg, #3d1a2e 0%, #6b2d4a 50%, #8b4560 100%)", desc: "二人で楽しめる名作" },
@@ -87,13 +88,7 @@ export default async function HomePage() {
               気分やシーンに合わせておすすめ作品を提案。<br />
               あなたの「観たい！」がきっと見つかります。
             </p>
-            <Link
-              href="/movies"
-              style={{ display: "flex", alignItems: "center", gap: 10, backgroundColor: "var(--bg-card)", border: "1.5px solid var(--border)", borderRadius: 40, padding: "12px 20px", marginBottom: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.06)", color: "var(--fg-muted)", fontSize: 15, maxWidth: 360 }}
-            >
-              <span style={{ fontSize: 16 }}>🔍</span>
-              作品名・気分・ジャンルで探す
-            </Link>
+            <SearchBox variant="hero" placeholder="作品名で探す（例: 恋空）" />
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               <span style={{ fontSize: 12, color: "var(--fg-muted)" }}>人気のジャンル：</span>
               {["恋愛", "泣ける", "青春", "アニメ", "サスペンス"].map((kw) => {
@@ -288,19 +283,28 @@ export default async function HomePage() {
         <AdBanner size="leaderboard" />
       </div>
 
-      {/* ── Email CTA ── */}
+      {/* ── 最終CTA ── */}
       <section style={{ backgroundColor: "var(--bg-card)", borderTop: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: 1120, margin: "0 auto", padding: "36px 20px", display: "flex", alignItems: "center", gap: 20 }}>
-          <span style={{ fontSize: 36, flexShrink: 0 }}>✉️</span>
-          <div style={{ flex: 1 }}>
-            <p style={{ fontWeight: 600, marginBottom: 2 }}>新着・おすすめ作品をメールでお届け</p>
-            <p style={{ fontSize: 13, color: "var(--fg-muted)" }}>気になる作品や特集の最新情報をお届けします。</p>
-          </div>
-          <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
-            <input type="email" placeholder="メールアドレスを入力" style={{ border: "1px solid var(--border)", borderRadius: 8, padding: "10px 16px", fontSize: 14, width: 220, backgroundColor: "var(--bg)", color: "var(--fg)", outline: "none" }} />
-            <button style={{ backgroundColor: "var(--accent)", color: "#fff", fontSize: 14, fontWeight: 600, padding: "10px 20px", borderRadius: 8, border: "none", cursor: "pointer" }}>
-              登録する
-            </button>
+        <div style={{ maxWidth: 1120, margin: "0 auto", padding: "48px 20px" }}>
+          <div style={{ background: "linear-gradient(135deg, #2d1f15 0%, #1a1208 100%)", borderRadius: 18, padding: "40px 32px", textAlign: "center", color: "#fff" }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.6)", letterSpacing: "0.06em", marginBottom: 10 }}>
+              観たい作品はもう決まった？
+            </p>
+            <h2 style={{ fontSize: "clamp(20px, 3vw, 28px)", fontWeight: 800, lineHeight: 1.3, marginBottom: 12 }}>
+              無料トライアルで、今すぐおうちで映画館
+            </h2>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.75)", lineHeight: 1.8, marginBottom: 28, maxWidth: 560, margin: "0 auto 28px" }}>
+              U-NEXTやDMM TVなら無料お試し期間つき。期間内に解約すれば料金は一切かかりません。
+              自分にぴったりの配信サービスを比べて選びましょう。
+            </p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <Link href="/vod" style={{ display: "inline-block", backgroundColor: "var(--accent)", color: "#fff", padding: "13px 30px", borderRadius: 10, fontSize: 15, fontWeight: 700 }}>
+                おすすめVODを比較する →
+              </Link>
+              <Link href="/movies" style={{ display: "inline-block", backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "#fff", padding: "13px 30px", borderRadius: 10, fontSize: 15, fontWeight: 700 }}>
+                作品をもっと探す
+              </Link>
+            </div>
           </div>
         </div>
       </section>

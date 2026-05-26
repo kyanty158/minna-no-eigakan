@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SearchBox from "@/components/ui/SearchBox";
 
 export default function Header() {
   return (
@@ -57,16 +58,9 @@ export default function Header() {
 
         {/* Right actions */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
-          <Link
-            href="/movies"
-            style={{
-              fontSize: 13,
-              color: "var(--fg-muted)",
-              padding: "6px 8px",
-            }}
-          >
-            🔍
-          </Link>
+          <div className="header-search">
+            <SearchBox variant="header" />
+          </div>
           <Link
             href="/vod"
             style={{
