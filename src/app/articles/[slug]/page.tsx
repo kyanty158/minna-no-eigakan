@@ -59,11 +59,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       type: "article",
       ...(article.published_at ? { publishedTime: article.published_at } : {}),
+      ...(article.thumbnail_url ? { images: [{ url: article.thumbnail_url, width: 1280, height: 720, alt: article.title }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description,
+      ...(article.thumbnail_url ? { images: [article.thumbnail_url] } : {}),
     },
   };
 }

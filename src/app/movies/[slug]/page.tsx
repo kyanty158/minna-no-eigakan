@@ -129,7 +129,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!movie) return {};
   const canonical = `https://minna-no-eigakan.vercel.app/movies/${slug}`;
   const title = `『${movie.title}』はどこで見れる？配信中のVODを紹介`;
-  const description = `『${movie.title}』(${movie.release_year ?? ""}) が視聴できるVODサービスを紹介。無料トライアルで実質0円で観る方法も解説。${movie.summary ?? ""}`;
+  const rawDesc = `『${movie.title}』(${movie.release_year ?? ""}) が視聴できるVODサービスを紹介。無料トライアルで実質0円で観る方法も解説。${movie.summary ?? ""}`;
+  const description = rawDesc.length > 158 ? rawDesc.slice(0, 157) + "…" : rawDesc;
   return {
     title,
     description,
