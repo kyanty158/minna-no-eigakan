@@ -43,6 +43,14 @@ async function getBestFlatAvailability(movieIds: string[]): Promise<Record<strin
   return map;
 }
 
+export async function generateStaticParams() {
+  const { data } = await supabase
+    .from("articles")
+    .select("slug")
+    .eq("status", "published");
+  return (data ?? []).map((a: { slug: string }) => ({ slug: a.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);

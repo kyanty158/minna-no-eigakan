@@ -4,9 +4,19 @@ import { supabase } from "@/lib/supabase";
 import type { VodService } from "@/types";
 import AdBanner from "@/components/ui/AdBanner";
 
+const BASE_URL_VOD = "https://minna-no-eigakan.vercel.app";
+
 export const metadata: Metadata = {
   title: "VOD比較ランキング｜映画・ドラマを見るならどの動画配信サービス？",
   description: "U-NEXT・DMM TV・Hulu・ABEMAなど人気の動画配信サービス(VOD)を、月額料金・無料期間・特徴で徹底比較。映画やドラマ、恋愛・カップル向けにおすすめのVODをランキングで紹介します。",
+  alternates: { canonical: `${BASE_URL_VOD}/vod` },
+  openGraph: {
+    title: "VOD比較ランキング【2026年最新】｜みんなの映画館",
+    description: "U-NEXT・DMM TV・Hulu・ABEMAを月額料金・無料期間・作品数で徹底比較。あなたにぴったりのVODが見つかります。",
+    url: `${BASE_URL_VOD}/vod`,
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 // 表示用メタ（DBに無い「おすすめポイント」「順位」を補う）
@@ -40,8 +50,32 @@ export default async function VodPage() {
     mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: BASE_URL_VOD },
+      { "@type": "ListItem", position: 2, name: "VOD比較ランキング", item: `${BASE_URL_VOD}/vod` },
+    ],
+  };
+
+  const itemListLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "VODサービスランキング",
+    url: `${BASE_URL_VOD}/vod`,
+    itemListElement: services.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${BASE_URL_VOD}/vod/${s.slug}`,
+      name: s.name,
+    })),
+  };
+
   return (
     <div style={{ backgroundColor: "var(--bg)" }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* Hero */}

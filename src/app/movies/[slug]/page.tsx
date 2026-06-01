@@ -123,6 +123,11 @@ function CalloutCTA({ movieTitle, vod }: { movieTitle: string; vod: VodService }
   );
 }
 
+export async function generateStaticParams() {
+  const { data } = await supabase.from("movies").select("slug");
+  return (data ?? []).map((m: { slug: string }) => ({ slug: m.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const movie = await getMovie(slug);

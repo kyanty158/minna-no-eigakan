@@ -33,6 +33,11 @@ async function getMoviesOnService(serviceId: string) {
   return (data as unknown as { availability_type: string; movie: Movie }[]) ?? [];
 }
 
+export async function generateStaticParams() {
+  const { data } = await supabase.from("vod_services").select("slug");
+  return (data ?? []).map((s: { slug: string }) => ({ slug: s.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = await getService(slug);

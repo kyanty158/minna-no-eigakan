@@ -4,9 +4,19 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import type { Article } from "@/types";
 
+const BASE_URL = "https://minna-no-eigakan.vercel.app";
+
 export const metadata: Metadata = {
   title: "特集・まとめ記事一覧",
   description: "カップルで見たい映画、泣ける映画、雨の日に見たい映画など、シーン別・ジャンル別の映画まとめ記事一覧。観たい作品が見つかったらどのVODで見れるかもチェックできます。",
+  alternates: { canonical: `${BASE_URL}/articles` },
+  openGraph: {
+    title: "特集・まとめ記事一覧｜みんなの映画館",
+    description: "カップルで見たい映画、泣ける映画、雨の日に見たい映画など、シーン別・ジャンル別の映画まとめ記事一覧。",
+    url: `${BASE_URL}/articles`,
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const FALLBACK_BGS = [
@@ -24,7 +34,32 @@ export default async function ArticlesPage() {
 
   const articles = (data as Article[] | null) ?? [];
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "特集・まとめ", item: `${BASE_URL}/articles` },
+    ],
+  };
+
+  const itemListLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "映画まとめ特集一覧",
+    url: `${BASE_URL}/articles`,
+    itemListElement: articles.map((a, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${BASE_URL}/articles/${a.slug}`,
+      name: a.title,
+    })),
+  };
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }} />
     <div style={{ backgroundColor: "var(--bg)" }}>
       <section style={{ backgroundColor: "var(--bg-card)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: 1120, margin: "0 auto", padding: "40px 20px" }}>
@@ -65,5 +100,6 @@ export default async function ArticlesPage() {
         {articles.length === 0 && <p style={{ color: "var(--fg-muted)", textAlign: "center", padding: "80px 0" }}>記事を準備中です。</p>}
       </div>
     </div>
+    </>
   );
 }

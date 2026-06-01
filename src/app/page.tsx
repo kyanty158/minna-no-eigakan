@@ -1,9 +1,38 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import type { Movie, Article } from "@/types";
 import AdBanner from "@/components/ui/AdBanner";
 import SearchBox from "@/components/ui/SearchBox";
+
+const BASE_URL = "https://minna-no-eigakan.vercel.app";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { data: movie } = await supabase
+    .from("movies")
+    .select("poster_url")
+    .not("poster_url", "is", null)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .single();
+  const ogImage = (movie as { poster_url: string } | null)?.poster_url;
+  return {
+    openGraph: {
+      siteName: "みんなの映画館",
+      locale: "ja_JP",
+      type: "website",
+      url: BASE_URL,
+      title: "みんなの映画館｜今日観たい映画・ドラマが見つかる",
+      description: "カップルで見たい映画、おうちデート映画、泣ける恋愛映画など、気分やシーンから映画・ドラマが探せるサイトです。",
+      ...(ogImage ? { images: [{ url: ogImage, width: 500, height: 750, alt: "みんなの映画館" }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
+  };
+}
 
 const scenes = [
   { name: "カップル", slug: "couple", icon: "♡", bg: "linear-gradient(135deg, #3d1a2e 0%, #6b2d4a 50%, #8b4560 100%)", desc: "二人で楽しめる名作" },

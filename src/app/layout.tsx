@@ -18,6 +18,14 @@ const websiteJsonLd = {
     name: "みんなの映画館",
     url: BASE_URL,
   },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${BASE_URL}/search?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export const metadata: Metadata = {
