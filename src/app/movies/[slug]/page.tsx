@@ -133,8 +133,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const movie = await getMovie(slug);
   if (!movie) return {};
   const canonical = `https://minna-no-eigakan.vercel.app/movies/${slug}`;
-  const title = `『${movie.title}』はどこで見れる？配信中のVODを紹介`;
-  const rawDesc = `『${movie.title}』(${movie.release_year ?? ""}) が視聴できるVODサービスを紹介。無料トライアルで実質0円で観る方法も解説。${movie.summary ?? ""}`;
+  const avail = await getAvailability(movie.id);
+  const flatNames = avail.filter(a => a.availability_type === "見放題").map(a => (a.vod_service as VodService).name);
+  const rentalNames = avail.filter(a => a.availability_type === "レンタル").map(a => (a.vod_service as VodService).name);
+  const vodLine = flatNames.length > 0
+    ? `${flatNames.join("・")}で見放題配信中！`
+    : rentalNames.length > 0
+      ? `${rentalNames.join("・")}でレンタル配信中。`
+      : "";
+  const title = `『${movie.title}』はどこで見れる？VOD配信情報まとめ`;
+  const rawDesc = `${vodLine}『${movie.title}』(${movie.release_year ?? ""})のあらすじ・見どころ・VOD配信情報を紹介。無料トライアルを使えば実質0円で観られます。`;
   const description = rawDesc.length > 158 ? rawDesc.slice(0, 157) + "…" : rawDesc;
   return {
     title,
