@@ -33,8 +33,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articleUrls: MetadataRoute.Sitemap = (articlesRes.data ?? []).map((a) => ({
     url: `${BASE_URL}/articles/${a.slug}`,
     lastModified: a.updated_at ? new Date(a.updated_at) : new Date(),
-    changeFrequency: "monthly",
-    priority: 0.7,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const { data: vodsRes } = await supabase.from("vod_services").select("slug");
+  const vodDetailUrls: MetadataRoute.Sitemap = (vodsRes ?? []).map((v) => ({
+    url: `${BASE_URL}/vod/${v.slug}`,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
   }));
 
   return [
@@ -45,9 +52,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/about`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE_URL}/privacy`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE_URL}/contact`, changeFrequency: "yearly", priority: 0.3 },
+    ...articleUrls,
     ...movieUrls,
     ...genreUrls,
     ...sceneUrls,
-    ...articleUrls,
+    ...vodDetailUrls,
   ];
 }

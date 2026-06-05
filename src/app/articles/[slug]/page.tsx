@@ -79,10 +79,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const vodServices = [
+  { slug: "amazon-prime", name: "Amazon Prime Video", trial: "30日間無料", price: "600円/月" },
   { slug: "unext", name: "U-NEXT", trial: "31日間無料", price: "2,189円/月" },
-  { slug: "dmm-tv", name: "DMM TV", trial: "30日間無料", price: "550円/月" },
   { slug: "hulu", name: "Hulu", trial: "2週間無料", price: "1,026円/月" },
-  { slug: "abema", name: "ABEMA", trial: "2週間無料", price: "960円/月" },
+  { slug: "dmm-tv", name: "DMM TV", trial: "30日間無料", price: "550円/月" },
 ];
 
 const RANK_COLORS = ["#c07840", "#8b9aac", "#9c7c5a"];
