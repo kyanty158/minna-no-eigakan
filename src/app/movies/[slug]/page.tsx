@@ -200,10 +200,32 @@ export default async function MovieDetailPage({ params }: Props) {
         ? `${bestFlat.vod_service?.name}の${bestFlat.vod_service?.free_trial_text ?? "無料トライアル"}を使えば実質無料で視聴できます。期間内に解約すれば料金はかかりません。`
         : "見放題配信は確認できていませんが、各VODの無料トライアル期間中に最新の配信状況を確認することをおすすめします。",
     },
-    {
-      q: `『${movie.title}』はNetflixやAmazonプライムで観られる？`,
-      a: `現時点でNetflix・Amazon Prime Videoでの配信は確認できていません。${bestFlat ? `代わりに${bestFlat.vod_service?.name}での見放題配信をおすすめします。` : "U-NEXTやDMM TVでの配信状況をご確認ください。"}`,
-    },
+    (() => {
+      const onAmazon = sortedAvail.some((a) => a.availability_type === "見放題" && a.vod_service?.slug === "amazon-prime");
+      const onNetflix = sortedAvail.some((a) => a.availability_type === "見放題" && a.vod_service?.slug === "netflix");
+      if (onAmazon && onNetflix) {
+        return {
+          q: `『${movie.title}』はNetflixやAmazonプライムで観られる？`,
+          a: `はい、Amazon Prime VideoとNetflixどちらでも見放題配信中です。`,
+        };
+      }
+      if (onAmazon) {
+        return {
+          q: `『${movie.title}』はAmazonプライムで観られる？`,
+          a: `はい、Amazon Prime Video（Amazonプライムビデオ）で見放題配信中です。Amazonプライム会員であれば追加料金なしで視聴できます。月額600円（年払い換算）で映画・ドラマ・配送特典もセットでお得です。`,
+        };
+      }
+      if (onNetflix) {
+        return {
+          q: `『${movie.title}』はNetflixで観られる？`,
+          a: `はい、Netflixで見放題配信中です。`,
+        };
+      }
+      return {
+        q: `『${movie.title}』はNetflixやAmazonプライムで観られる？`,
+        a: `現時点でNetflix・Amazon Prime Videoでの見放題配信は確認できていません。${bestFlat ? `代わりに${bestFlat.vod_service?.name}での見放題配信をおすすめします。` : "U-NEXTやDMM TVでの配信状況をご確認ください。"}`,
+      };
+    })(),
     {
       q: "VODの無料トライアルはどのくらいの期間？",
       a: "U-NEXTは31日間、DMM TVは30日間、Huluは2週間の無料トライアルがあります。いずれも期間内に解約すれば料金は一切かかりません。",
